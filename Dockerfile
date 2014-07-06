@@ -5,6 +5,13 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
+# Configure locale
+RUN export LANGUAGE=en_US.UTF-8 && \
+        export LANG=en_US.UTF-8 && \
+        export LC_ALL=en_US.UTF-8 && \
+        locale-gen en_US.UTF-8 && \
+        dpkg-reconfigure --frontend noninteractive locales
+
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y openssh-server supervisor
@@ -16,12 +23,6 @@ RUN echo 'root:postgres' |chpasswd
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 USER postgres
-# Configure locale
-RUN export LANGUAGE=en_US.UTF-8 && \
-        export LANG=en_US.UTF-8 && \
-        export LC_ALL=en_US.UTF-8 && \
-        locale-gen en_US.UTF-8 && \
-        dpkg-reconfigure --frontend noninteractive locales
 
 RUN /etc/init.d/postgresql start &&\
     psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
