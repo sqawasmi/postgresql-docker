@@ -16,12 +16,21 @@ RUN echo 'root:postgres' |chpasswd
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 USER postgres
+# Configure locale
+RUN export LANGUAGE=en_US.UTF-8 && \
+        export LANG=en_US.UTF-8 && \
+        export LC_ALL=en_US.UTF-8 && \
+        locale-gen en_US.UTF-8 && \
+        dpkg-reconfigure --frontend noninteractive locales
+
 RUN /etc/init.d/postgresql start &&\
     psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
     createdb -O docker docker
 
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
+
+USER root 
 
 EXPOSE 22 5432
 
