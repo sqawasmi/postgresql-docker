@@ -6,11 +6,8 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 # Configure locale
-RUN export LANGUAGE=en_US.UTF-8 && \
-        export LANG=en_US.UTF-8 && \
-        export LC_ALL=en_US.UTF-8 && \
-        locale-gen en_US.UTF-8 && \
-        dpkg-reconfigure --frontend noninteractive locales
+RUN locale-gen en_US.UTF-8 && update-locale
+RUN echo 'LANG="en_US.UTF-8"' > /etc/default/locale
 
 RUN apt-get update
 RUN apt-get upgrade -y
