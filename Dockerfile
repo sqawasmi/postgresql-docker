@@ -17,7 +17,7 @@ RUN apt-get -y install python-software-properties software-properties-common pos
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /var/log/supervisor
 RUN echo 'root:postgres' |chpasswd
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 USER postgres
 
