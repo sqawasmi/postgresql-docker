@@ -16,7 +16,7 @@ Built images are uploaded to [index.docker.io][1]
  - Install Docker: [http://docs.docker.io/][2]
  - Execute
  `docker run -d --name postgresql shaker/postgresql`
- - Run with SSH on port `2222`
+ - to run with SSH on port `2222`
  `docker run -d --name postgresql -p 2222:22 shaker/postgresql`
  - If you like to expose postgresql port too:
  `docker run -d --name postgresql -p 2222:22 -p 5432:5432 shaker/postgresql`
